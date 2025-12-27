@@ -1,0 +1,110 @@
+<div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Finalizar Pedido</h2>
+            <button class="close-btn" (click)="onCancel()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Step 1: Cart Review -->
+            <div *ngIf="step === 1" class="step-content">
+                <div class="section">
+                    <h3>🛒 Revisão do Pedido</h3>
+                    <div class="cart-items">
+                        <div class="cart-item" *ngFor="let item of items">
+                            <div class="item-image">
+                                <img [src]="item.product.image" [alt]="item.product.name"
+                                    onerror="this.src='assets/products/placeholder.svg'">
+                            </div>
+                            <div class="item-content">
+                                <div class="item-header">
+                                    <span class="item-name">{{ item.product.name }}</span>
+                                    <button class="delete-btn" (click)="removeItem(item)">
+                                        🗑️
+                                    </button>
+                                </div>
+                                <div class="item-controls">
+                                    <div class="qty-controls">
+                                        <button (click)="decreaseQty(item)" class="qty-btn">-</button>
+                                        <span class="qty-value">{{ item.quantity }}</span>
+                                        <button (click)="increaseQty(item)" class="qty-btn">+</button>
+                                    </div>
+                                    <span class="item-price">{{ (item.product.price * item.quantity) | currency:'BRL'
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-total-row">
+                            <span>Total</span>
+                            <span class="total-price">{{ total | currency:'BRL' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📝 Observações</h3>
+                    <textarea [(ngModel)]="data.observations" placeholder="Ex: Sem cebola, capricha no molho..."
+                        class="form-control" rows="3">
+          </textarea>
+                </div>
+            </div>
+
+            <!-- Step 2: Address & Payment -->
+            <div *ngIf="step === 2" class="step-content">
+                <div class="section">
+                    <h3>📍 Endereço de Entrega</h3>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="data.address.street" placeholder="Rua" class="form-control">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" [(ngModel)]="data.address.number" placeholder="Número" class="form-control"
+                            style="flex: 1">
+                        <input type="text" [(ngModel)]="data.address.complement" placeholder="Complemento"
+                            class="form-control" style="flex: 2">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="data.address.neighborhood" placeholder="Bairro"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="data.address.city" placeholder="Cidade" class="form-control">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>💳 Forma de Pagamento</h3>
+                    <div class="payment-options">
+                        <label class="radio-option">
+                            <input type="radio" name="payment" [(ngModel)]="data.paymentMethod" value="Dinheiro">
+                            <span>Dinheiro</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="payment" [(ngModel)]="data.paymentMethod"
+                                value="Cartão de Crédito">
+                            <span>Cartão de Crédito</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="payment" [(ngModel)]="data.paymentMethod"
+                                value="Cartão de Débito">
+                            <span>Cartão de Débito</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="payment" [(ngModel)]="data.paymentMethod" value="PIX">
+                            <span>PIX</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="step === 1 ? onCancel() : prevStep()">
+                {{ step === 1 ? 'Cancelar' : 'Voltar' }}
+            </button>
+            <button class="btn btn-primary" (click)="step === 1 ? nextStep() : onConfirm()"
+                [disabled]="step === 2 && !isValid()">
+                {{ step === 1 ? 'Continuar' : 'Confirmar Pedido' }}
+            </button>
+        </div>
+    </div>
+</div>

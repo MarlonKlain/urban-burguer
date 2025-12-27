@@ -1,0 +1,31 @@
+.reviews {
+    padding: 2rem 0 4rem;
+    background-color: #fff;
+}
+
+.review-card {
+    background: var(--background-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+}
+
+.stars {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.text {
+    font-style: italic;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.author {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--light-text-color);
+    text-align: right;
+}

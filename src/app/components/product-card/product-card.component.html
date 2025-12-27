@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="image-container">
+        <img [src]="product.image" [alt]="product.name" class="product-img"
+            onerror="this.src='assets/products/placeholder.svg'">
+    </div>
+    <div class="content">
+        <div class="header">
+            <h3 class="title">{{ product.name }}</h3>
+            <span class="price">{{ product.price | currency:'BRL' }}</span>
+        </div>
+        <p class="description">{{ product.description }}</p>
+        <button (click)="addToCart()" class="add-btn">
+            Adicionar
+        </button>
+    </div>
+</div>

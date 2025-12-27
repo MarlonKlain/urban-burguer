@@ -1,0 +1,54 @@
+<div class="menu-page">
+    <header class="menu-header">
+        <div class="container header-content">
+            <a routerLink="/" class="back-btn">← Voltar</a>
+            <h1>Cardápio</h1>
+        </div>
+    </header>
+
+    <div class="search-container container">
+        <input type="text" [ngModel]="searchTerm()" (ngModelChange)="updateSearch($event)"
+            placeholder="Buscar por nome ou ingrediente..." class="search-input">
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="categories-nav container">
+        <button *ngFor="let cat of categories()" (click)="selectCategory(cat)" [class.active]="activeCategory() === cat"
+            class="cat-btn">
+            {{ cat }}
+        </button>
+    </div>
+
+    <!-- Products Grid (Only shows active category) -->
+    <div class="container menu-content">
+        <h2 class="category-title">{{ activeCategory() }}</h2>
+
+        <div class="products-list" *ngIf="filteredProducts().length > 0; else noItems">
+            <app-product-card *ngFor="let product of filteredProducts()" [product]="product">
+            </app-product-card>
+        </div>
+
+        <ng-template #noItems>
+            <div class="no-items-message">
+                <p>Nenhum item encontrado nesta categoria.</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <div class="floating-cart" *ngIf="(cartTotal$ | async) as total">
+        <div class="cart-info" *ngIf="total > 0">
+            <div class="cart-summary">
+                <span class="count">{{ (cartItems$ | async)?.length }} itens</span>
+                <span class="total">{{ total | currency:'BRL' }}</span>
+            </div>
+            <button (click)="openCheckout()" class="btn btn-primary whatsapp-btn">
+                Enviar Pedido 📱
+            </button>
+        </div>
+    </div>
+
+    <app-checkout-modal *ngIf="showCheckout" [items]="(cartItems$ | async) || []" [total]="(cartTotal$ | async) || 0"
+        (confirm)="onCheckoutConfirm($event)" (cancel)="closeCheckout()">
+    </app-checkout-modal>
+</div>
