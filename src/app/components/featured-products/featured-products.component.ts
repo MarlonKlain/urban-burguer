@@ -20,7 +20,7 @@ export class FeaturedProductsComponent implements OnInit {
   constructor(private productsService: ProductsService) { }
 
   ngOnInit() {
-    this.products$ = this.productsService.getFeaturedProducts();
+    this.products$ = this.productsService.getFeaturedProducts(1);
   }
 
   scrollLeft() {

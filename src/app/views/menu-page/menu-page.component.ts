@@ -28,7 +28,7 @@ export class MenuPageComponent {
   activeCategory = signal('');
 
   // Data Signal (Auto-subscribed)
-  products = toSignal(this.productsService.getProducts(), { initialValue: [] });
+  products = toSignal(this.productsService.getProducts(1), { initialValue: [] });
 
   // Computed: Unique Categories from Products
   categories = computed(() => {

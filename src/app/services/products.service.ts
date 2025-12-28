@@ -10,12 +10,12 @@ import { environment } from '../../environments/environment';
 })
 export class ProductsService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/public/menu/12`; // Hardcoded restaurant ID 12
+  private apiUrl = `${environment.apiUrl}/public/menu`;
 
   constructor() { }
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
+  getProducts(userId: number): Observable<Product[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${userId}`).pipe(
       map(items => items.map(item => ({
         id: item.id,
         name: item.name,
@@ -28,14 +28,14 @@ export class ProductsService {
     );
   }
 
-  getFeaturedProducts(): Observable<Product[]> {
-    return this.getProducts().pipe(
+  getFeaturedProducts(userId: number): Observable<Product[]> {
+    return this.getProducts(userId).pipe(
       map(products => products.filter(p => p.featured))
     );
   }
 
-  getProductsByCategory(category: string): Observable<Product[]> {
-    return this.getProducts().pipe(
+  getProductsByCategory(userId: number, category: string): Observable<Product[]> {
+    return this.getProducts(userId).pipe(
       map(products => products.filter(p => p.category === category))
     );
   }
