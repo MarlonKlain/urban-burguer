@@ -4,6 +4,6 @@ export const environment = {
     cloudinary: {
         cloudName: 'dx2ty3i4g',
         uploadPreset: 'unsigned_preset', // Optional if doing uploads, but good to have structure
-        folder: 'Urban Buger'
+        folder: 'Urban Burger'
     }
 };

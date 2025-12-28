@@ -38,15 +38,23 @@ export class ProductsService {
   private getProductImage(originalUrl: string): string {
     if (!originalUrl) return 'assets/products/placeholder.svg';
 
-    // Extract filename from URL (e.g., '.../burger1.png' -> 'burger1')
+    // Extract the "public ID" (filename without extension) from the DB URL
+    // e.g., 'https://.../burger1.png' -> 'burger1'
     const filename = originalUrl.split('/').pop()?.split('.')[0];
     if (!filename) return originalUrl;
 
-    const myImage = this.cld.image(`${environment.cloudinary.folder}/${filename}`);
-    // Optional: Add transformations
+    // Construct the full Cloudinary Public ID: just the filename
+    const publicId = filename;
+
+    // Create the Cloudinary Image instance using the Public ID
+    const myImage = this.cld.image(publicId);
+
+    // Resize to 400x400 for optimization
     myImage.resize(fill().width(400).height(400));
 
-    return myImage.toURL();
+    const url = myImage.toURL();
+    console.log(`[ProductsService] Generated Cloudinary URL for ${filename}:`, url);
+    return url;
   }
 
   getFeaturedProducts(userId: number): Observable<Product[]> {
