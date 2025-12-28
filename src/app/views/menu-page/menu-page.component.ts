@@ -34,7 +34,7 @@ export class MenuPageComponent {
   categories = computed(() => {
     const prods = this.products();
     const unique = [...new Set(prods.map(p => p.category))];
-    return unique.sort();
+    return ['All', ...unique.sort()];
   });
 
   // Computed: Filtered Products based on search and active category
@@ -44,7 +44,7 @@ export class MenuPageComponent {
     const search = this.searchTerm().toLowerCase();
 
     return prods.filter(p => {
-      const matchesCategory = p.category === active;
+      const matchesCategory = active === 'All' || p.category === active;
       if (!search) return matchesCategory;
 
       const matchesSearch = p.name.toLowerCase().includes(search) ||
@@ -68,7 +68,7 @@ export class MenuPageComponent {
       const cats = this.categories();
       const currentActive = this.activeCategory();
 
-      // If we have categories but no valid active category selected, select the first one
+      // If we have categories but no valid active category selected, select the first one ('All')
       if (cats.length > 0 && !cats.includes(currentActive)) {
         this.activeCategory.set(cats[0]);
       }

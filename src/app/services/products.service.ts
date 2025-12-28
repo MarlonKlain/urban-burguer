@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Product } from '../models/product.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/public/menu/12'; // Hardcoded restaurant ID 12
+  private apiUrl = `${environment.apiUrl}/public/menu/12`; // Hardcoded restaurant ID 12
 
   constructor() { }
 
