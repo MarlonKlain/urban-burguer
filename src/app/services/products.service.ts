@@ -50,8 +50,8 @@ export class ProductsService {
 
     if (!filename) return originalUrl;
 
-    // Construct the full Cloudinary Public ID: just the filename
-    const publicId = filename;
+    // Construct the full Cloudinary Public ID: folder + filename
+    const publicId = `${environment.cloudinary.folder}/${filename}`;
 
     // Create the Cloudinary Image instance using the Public ID
     const myImage = this.cld.image(publicId);
