@@ -38,9 +38,16 @@ export class ProductsService {
   private getProductImage(originalUrl: string): string {
     if (!originalUrl) return 'assets/products/placeholder.svg';
 
-    // Extract the "public ID" (filename without extension) from the DB URL
-    // e.g., 'https://.../burger1.png' -> 'burger1'
-    const filename = originalUrl.split('/').pop()?.split('.')[0];
+    // Extract filename from URL
+    let filename = originalUrl.split('/').pop();
+    if (!filename) return originalUrl;
+
+    // Remove query parameters (e.g., ?_a=...)
+    filename = filename.split('?')[0];
+
+    // Remove extension (e.g., .png)
+    filename = filename.split('.')[0];
+
     if (!filename) return originalUrl;
 
     // Construct the full Cloudinary Public ID: just the filename
