@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
+import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -17,10 +18,17 @@ export class FeaturedProductsComponent implements OnInit {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  constructor(private productsService: ProductsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private cartService: CartService
+  ) { }
 
   ngOnInit() {
     this.products$ = this.productsService.getFeaturedProducts(1);
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
   }
 
   scrollLeft() {

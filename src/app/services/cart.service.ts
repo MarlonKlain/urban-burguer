@@ -15,7 +15,9 @@ export class CartService {
     private cartItems = new BehaviorSubject<CartItem[]>([]);
     cartItems$ = this.cartItems.asObservable();
 
-    constructor() { }
+    constructor() {
+        this.loadCart();
+    }
 
     addToCart(product: Product) {
         const currentItems = this.cartItems.value;
@@ -27,12 +29,33 @@ export class CartService {
         } else {
             this.cartItems.next([...currentItems, { product, quantity: 1 }]);
         }
+        this.saveCart();
+    }
+
+    private saveCart() {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('cartItems', JSON.stringify(this.cartItems.value));
+        }
+    }
+
+    private loadCart() {
+        if (typeof localStorage !== 'undefined') {
+            const savedCart = localStorage.getItem('cartItems');
+            if (savedCart) {
+                try {
+                    this.cartItems.next(JSON.parse(savedCart));
+                } catch (e) {
+                    console.error('Error loading cart from localStorage', e);
+                }
+            }
+        }
     }
 
     removeFromCart(productId: number) {
         const currentItems = this.cartItems.value;
         const updatedItems = currentItems.filter(item => item.product.id !== productId);
         this.cartItems.next(updatedItems);
+        this.saveCart();
     }
 
     updateQuantity(productId: number, quantity: number) {
@@ -44,6 +67,7 @@ export class CartService {
                 this.removeFromCart(productId);
             } else {
                 this.cartItems.next([...currentItems]);
+                this.saveCart();
             }
         }
     }
@@ -58,5 +82,6 @@ export class CartService {
 
     clearCart() {
         this.cartItems.next([]);
+        this.saveCart();
     }
 }

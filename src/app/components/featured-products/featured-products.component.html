@@ -17,6 +17,9 @@
                     <div class="info">
                         <h3 class="name">{{ product.name }}</h3>
                         <p class="price">{{ product.price | currency:'BRL' }}</p>
+                        <button class="add-to-cart-btn" (click)="addToCart(product)">
+                            Adicionar ao carrinho
+                        </button>
                     </div>
                 </div>
             </div>
