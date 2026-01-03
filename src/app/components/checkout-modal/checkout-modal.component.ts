@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { CartItem, CartService } from '../../services/cart.service';
 
 export interface CheckoutData {
+  customerName: string;
+  customerPhone: string;
   address: {
     street: string;
     number: string;
@@ -31,6 +33,8 @@ export class CheckoutModalComponent {
   step: number = 1;
 
   data: CheckoutData = {
+    customerName: '',
+    customerPhone: '',
     address: {
       street: '',
       number: '',
@@ -75,6 +79,6 @@ export class CheckoutModalComponent {
 
   isValid(): boolean {
     const { street, number, neighborhood, city } = this.data.address;
-    return !!(street && number && neighborhood && city && this.data.paymentMethod);
+    return !!(this.data.customerName && this.data.customerPhone && street && number && neighborhood && city && this.data.paymentMethod);
   }
 }

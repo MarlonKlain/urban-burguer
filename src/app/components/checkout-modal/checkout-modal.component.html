@@ -52,6 +52,17 @@
             <!-- Step 2: Address & Payment -->
             <div *ngIf="step === 2" class="step-content">
                 <div class="section">
+                    <h3>👤 Seus Dados</h3>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="data.customerName" placeholder="Seu Nome" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" [(ngModel)]="data.customerPhone" placeholder="Seu Telefone (WhatsApp)"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <div class="section">
                     <h3>📍 Endereço de Entrega</h3>
                     <div class="form-group">
                         <input type="text" [(ngModel)]="data.address.street" placeholder="Rua" class="form-control">

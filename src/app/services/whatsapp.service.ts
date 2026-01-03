@@ -7,7 +7,7 @@ import { CheckoutData } from '../components/checkout-modal/checkout-modal.compon
 })
 export class WhatsappService {
 
-    private phoneNumber = '5551992746985';
+    private phoneNumber = '5551989764992';
 
     constructor() { }
 
