@@ -4,24 +4,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
-import { CartService, CartItem } from '../../services/cart.service';
-import { WhatsappService } from '../../services/whatsapp.service';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
-import { CheckoutModalComponent, CheckoutData } from '../../components/checkout-modal/checkout-modal.component';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { FloatingCartComponent } from '../../components/floating-cart/floating-cart.component';
 
 @Component({
   selector: 'app-menu-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProductCardComponent, FormsModule, CheckoutModalComponent],
+  imports: [CommonModule, RouterLink, ProductCardComponent, FormsModule, FloatingCartComponent],
   templateUrl: './menu-page.component.html',
   styleUrl: './menu-page.component.scss'
 })
 export class MenuPageComponent {
   private productsService = inject(ProductsService);
-  public cartService = inject(CartService);
-  private whatsappService = inject(WhatsappService);
 
   // State Signals
   searchTerm = signal('');
@@ -53,15 +47,6 @@ export class MenuPageComponent {
     });
   });
 
-  // Cart Observables (Keeping as observables for now to minimize changes to CartService)
-  cartItems$: Observable<CartItem[]> = this.cartService.cartItems$;
-  cartTotal$: Observable<number> = this.cartItems$.pipe(
-    map(items => items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0))
-  );
-
-  whatsappLink: string = '';
-  showCheckout: boolean = false;
-
   constructor() {
     // Effect: Automatically Select First Category when Categories Load
     effect(() => {
@@ -73,12 +58,6 @@ export class MenuPageComponent {
         this.activeCategory.set(cats[0]);
       }
     }, { allowSignalWrites: true });
-
-    // Effect: Update Whatsapp Link when cart changes (using observable subscription in constructor for simplicity or could be signal)
-    this.cartItems$.subscribe(items => {
-      const total = this.cartService.getTotal();
-      this.whatsappLink = this.whatsappService.getLink(items, total);
-    });
   }
 
   // Actions
@@ -89,23 +68,5 @@ export class MenuPageComponent {
   // Search Update (called from template)
   updateSearch(term: string) {
     this.searchTerm.set(term);
-  }
-
-  openCheckout() {
-    this.showCheckout = true;
-  }
-
-  closeCheckout() {
-    this.showCheckout = false;
-  }
-
-  onCheckoutConfirm(data: CheckoutData) {
-    const items = this.cartService.getItems();
-    const total = this.cartService.getTotal();
-    const link = this.whatsappService.getLink(items, total, data);
-
-    window.open(link, '_blank');
-    this.closeCheckout();
-    this.cartService.clearCart();
   }
 }

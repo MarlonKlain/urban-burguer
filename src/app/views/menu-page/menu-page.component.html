@@ -36,19 +36,5 @@
     </div>
 
     <!-- Floating Cart Button -->
-    <div class="floating-cart" *ngIf="(cartTotal$ | async) as total">
-        <div class="cart-info" *ngIf="total > 0">
-            <div class="cart-summary">
-                <span class="count">{{ (cartItems$ | async)?.length }} itens</span>
-                <span class="total">{{ total | currency:'BRL' }}</span>
-            </div>
-            <button (click)="openCheckout()" class="btn btn-primary whatsapp-btn">
-                Enviar Pedido 📱
-            </button>
-        </div>
-    </div>
-
-    <app-checkout-modal *ngIf="showCheckout" [items]="(cartItems$ | async) || []" [total]="(cartTotal$ | async) || 0"
-        (confirm)="onCheckoutConfirm($event)" (cancel)="closeCheckout()">
-    </app-checkout-modal>
+    <app-floating-cart></app-floating-cart>
 </div>
