@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -46,7 +47,7 @@ export class FloatingCartComponent {
             total: total
         };
 
-        this.http.post('http://localhost:8080/api/public/orders', orderPayload).subscribe({
+        this.http.post(`${environment.apiUrl}/public/orders`, orderPayload).subscribe({
             next: () => console.log('Order sent to backend'),
             error: (err) => console.error('Failed to send order', err)
         });
